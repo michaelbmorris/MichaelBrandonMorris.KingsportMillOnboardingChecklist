@@ -1,0 +1,89 @@
+@model User
+
+@{
+    ViewData["Title"] = "Onboard";
+}
+
+<h2>Onboard</h2>
+<h4>User</h4>
+<hr/>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.EmployeeId)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.EmployeeId)
+    </dd>
+</dl>
+<form asp-action="Onboard"
+      class="form-horizontal">
+    @if (Model.HasBeenOnboarded)
+    {
+        <p class="bg-danger">
+            This user has already been onboarded, and it does not appear that they have been offboarded. Onboarding them again may result in duplicate action items being associated with them. Are you sure you wish to proceed?
+        </p>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input class="btn btn-danger"
+                       type="submit"
+                       value="Onboard"/>
+                <a asp-action="Index"
+                   class="btn btn-primary">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    }
+    else if (Model.ActionItemAssignments.Any(a => a.CompletedOn == null))
+    {
+        <p class="bg-danger">
+            This user has incomplete action items associated with them. Onboarding them again may result in duplicate action items being associated with them. Are you sure you wish to proceed?
+        </p>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input class="btn btn-danger"
+                       type="submit"
+                       value="Onboard"/>
+                <a asp-action="Index"
+                   class="btn btn-primary">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="bg-info">
+            This user is ready to be onboarded. Onboarding them will associate the action items from their checklist with them and notify the assignees for the action items. Are you sure you wish to proceed?
+        </p>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input class="btn btn-primary"
+                       type="submit"
+                       value="Onboard"/>
+                <a asp-action="Index"
+                   class="btn btn-danger">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    }
+</form>

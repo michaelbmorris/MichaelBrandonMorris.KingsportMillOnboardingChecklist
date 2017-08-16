@@ -1,0 +1,19 @@
+@model IEnumerable<Checklist>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@Html.Grid(Model).Build(columns =>
+{
+    columns.Add(model => model.User.Name).Titled("Name");
+    columns.Add(model => $"<a href=\"{Url.Action("Details", new { id = model.Id })}\" class=\"btn btn-primary\">Details</a>").Encoded(false);
+    columns.Add(model => $"<a href=\"{Url.Action("Onboard", new { id = model.User.Id })}\" class=\"btn btn-primary\">Onboard</a>").Encoded(false);
+
+}).Filterable().Sortable()

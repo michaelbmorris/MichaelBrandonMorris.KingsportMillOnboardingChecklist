@@ -1,0 +1,62 @@
+@model ActionItemAssignment
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Action Item Assignment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionItem.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActionItem.Name)
+        </dd>
+        <dt>
+            @Html.DisplayFor(model => model.User.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Name)
+        </dd>
+        @if (Model.IsOnboarding)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ActionItem.OnboardingDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActionItem.OnboardingDescription)
+            </dd>
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ActionItem.OffboardingDescription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ActionItem.OffboardingDescription)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompletedOn)
+        </dd>   
+    </dl>
+</div>
+<form asp-action="Details" class="form-horizontal">
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Mark As Complete"/>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+</form>

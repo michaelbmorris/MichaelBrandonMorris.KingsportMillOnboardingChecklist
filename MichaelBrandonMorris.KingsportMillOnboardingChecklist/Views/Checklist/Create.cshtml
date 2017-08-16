@@ -1,0 +1,79 @@
+@model IEnumerable<Policy>
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <h4>Checklist</h4>
+    <hr/>
+    @foreach (var policy in Model)
+    {
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="checkbox">
+                        @* ReSharper disable once UnknownCssClass *@
+                        <input type="checkbox"
+                               class="policy-checkbox"
+                               id="policy-checkbox-@policy.Id"
+                               value="@policy.Id"
+                               checked="checked" />
+                        <h5 class="panel-title">
+                            @* ReSharper disable once Html.IdNotResolved *@
+                            <a data-toggle="collapse"
+                               href="#policy-@policy.Id">
+                                @policy.Name
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse"
+                     id="policy-@policy.Id">
+                    <ul class="list-group">
+                        @foreach (var actionItem in policy.ActionItems)
+                        {
+                            <li class="list-group-item">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               name="model"
+                                               value="@actionItem.Id"
+                                               checked="checked" />
+                                        @actionItem.Name
+                                    </label>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        <input type="submit"
+               class="btn btn-primary"
+               value="Create"/>
+        <a asp-action="Index"
+           class="btn btn-danger">Cancel</a>
+    </div>
+</form>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function() {
+            $(".policy-checkbox").click(function () {
+                var checkboxes = $("#policy-" + this.value + " :checkbox");
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked !== this.checked) {
+                        checkboxes[i].click();
+                    }
+                }
+            });
+        })
+    </script>
+}

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using MichaelBrandonMorris.KingsportMillOnboardingChecklist.Data;
 using MichaelBrandonMorris.KingsportMillOnboardingChecklist.Models;
 using MichaelBrandonMorris.KingsportMillOnboardingChecklist.Services;
+using NonFactors.Mvc.Grid;
 
 namespace MichaelBrandonMorris.KingsportMillOnboardingChecklist
 {
@@ -26,7 +27,6 @@ namespace MichaelBrandonMorris.KingsportMillOnboardingChecklist
 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
             }
 
@@ -36,25 +36,22 @@ namespace MichaelBrandonMorris.KingsportMillOnboardingChecklist
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddMvcGrid();
 
-            // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -72,10 +69,7 @@ namespace MichaelBrandonMorris.KingsportMillOnboardingChecklist
             }
 
             app.UseStaticFiles();
-
             app.UseIdentity();
-
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

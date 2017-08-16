@@ -1,0 +1,18 @@
+@model IEnumerable<ActionItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@Html.Grid(Model).Build(columns =>
+{
+    columns.Add(model => model.Policy).Titled("Policy");
+    columns.Add(model => model.Name).Titled("Name");
+    columns.Add(model => $"<a href=\"{Url.Action("Edit")}\">Edit</a>");
+})

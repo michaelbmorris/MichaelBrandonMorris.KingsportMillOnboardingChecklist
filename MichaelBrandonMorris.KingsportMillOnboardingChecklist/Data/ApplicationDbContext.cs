@@ -1,26 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MichaelBrandonMorris.KingsportMillOnboardingChecklist.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MichaelBrandonMorris.KingsportMillOnboardingChecklist.Models;
 
 namespace MichaelBrandonMorris.KingsportMillOnboardingChecklist.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions options)
             : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<ActionItemAssignment> ActionItemAssignments
         {
-            base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            get;
+            set;
+        }
+
+        public DbSet<ActionItem> ActionItems
+        {
+            get;
+            set;
+        }
+
+        public DbSet<Checklist> Checklists
+        {
+            get;
+            set;
+        }
+
+        public DbSet<Policy> Policies
+        {
+            get;
+            set;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Checklist>()
+                .HasOne(c => c.User)
+                .WithOne(u => u.Checklist)
+                .HasForeignKey<Checklist>(c => c.UserId);
         }
     }
 }

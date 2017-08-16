@@ -1,0 +1,14 @@
+@model IEnumerable<ActionItemAssignment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.Grid(Model).Build(columns =>
+{
+    columns.Add(model => model.ActionItem.Assignee.Name).Titled("Assignee");
+    columns.Add(model => model.ActionItem.Name).Titled("Action Item");
+    columns.Add(model => $"<a href=\"{Url.Action("Details", new { id = model.Id })}\" class=\"btn btn-primary\">Details</a>").Encoded(false);
+}).Filterable().Sortable()
